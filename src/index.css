@@ -46,7 +46,7 @@ body {
   font-size: 1.5rem;
   font-weight: 900;
   letter-spacing: -0.5px;
-  color: var(--text);
+  color: var(--accent);
 }
 
 .app-sub {
@@ -175,6 +175,7 @@ body {
   font-size: 4.5rem;
   font-weight: 900;
   line-height: 1;
+  color: var(--accent);
   color: var(--text);
   letter-spacing: -2px;
 }
