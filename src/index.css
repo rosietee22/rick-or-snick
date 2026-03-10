@@ -205,7 +205,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--muted);
-  margin: 12px 0;
+  margin-top: 12px;
 }
 
 .lead-msg.has-leader { color: var(--accent); }
