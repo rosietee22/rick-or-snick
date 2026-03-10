@@ -171,7 +171,6 @@ body {
   font-weight: 900;
   line-height: 1;
   color: var(--accent);
-  color: var(--text);
   letter-spacing: -2px;
 }
 
