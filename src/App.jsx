@@ -40,7 +40,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1 className="app-title">Rick or Snick</h1>
+        <h1 className="app-title">HEATED RIVALRY</h1>
         <p className="app-sub">Who&rsquo;s winning this week?</p>
       </header>
 
