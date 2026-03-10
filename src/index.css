@@ -43,8 +43,9 @@ body {
 }
 
 .app-title {
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 2.2rem;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.01em;
   color: var(--accent);
