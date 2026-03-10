@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import { ChevronLeft, Dumbbell, Zap, Check } from 'lucide-react';
+import { ChevronLeft, Dumbbell, Waves, Wind, Flower2, Zap, Check } from 'lucide-react';
 
 const ACTIVITY_TYPES = [
-  { id: 'workout', Icon: Dumbbell, label: 'Workout' },
+  { id: 'gym',     Icon: Dumbbell, label: 'Gym'     },
+  { id: 'swim',    Icon: Waves,    label: 'Swim'    },
+  { id: 'run',     Icon: Wind,     label: 'Run'     },
+  { id: 'pilates', Icon: Flower2,  label: 'Pilates' },
   { id: 'other',   Icon: Zap,      label: 'Other'   },
 ];
 
 export default function LogWorkout({ persons, initialPerson, onAdd, onCancel }) {
   const [personId, setPersonId] = useState(initialPerson || persons[0].id);
-  const [type, setType] = useState('workout');
+  const [type, setType] = useState('gym');
   const [otherLabel, setOtherLabel] = useState('');
   const [note, setNote] = useState('');
   const [submitted, setSubmitted] = useState(false);
