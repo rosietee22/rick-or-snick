@@ -550,6 +550,7 @@ body {
 .recent-name { font-size: 0.85rem; font-weight: 800; }
 
 .recent-meta { font-size: 0.75rem; color: var(--muted); font-weight: 500; text-transform: capitalize; }
+.recent-notes { font-size: 0.75rem; color: var(--text); font-style: italic; }
 
 .delete-btn {
   background: none;

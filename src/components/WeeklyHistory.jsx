@@ -34,6 +34,7 @@ export default function WeeklyHistory({ workouts, persons, onDelete }) {
                 <div className="recent-info">
                   <span className="recent-name">{getName(w.person)}</span>
                   <span className="recent-meta">{w.activity ?? w.type} · {formatDate(w.date)}</span>
+                  {w.notes && <span className="recent-notes">{w.notes}</span>}
                 </div>
                 <button className="delete-btn" onClick={() => handleDelete(w.id)} aria-label="Delete">
                   <Trash2 size={15} strokeWidth={2} />
