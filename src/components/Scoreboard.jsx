@@ -65,11 +65,7 @@ export default function Scoreboard({ workouts, persons, onLog, loading }) {
               })}
             </div>
             <p className={`lead-msg${weekLeader ? ' has-leader' : ''}`}>
-              {weekLeader
-                ? `${weekLeader.name} is winning`
-                : workouts.length === 0
-                ? 'Log your first workout to get started'
-                : 'Tied — all to play for'}
+              {weekLeader ? `${weekLeader.name} is winning` : 'Tied — all to play for'}
             </p>
           </>
         )}
