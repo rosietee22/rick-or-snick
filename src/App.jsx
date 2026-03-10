@@ -22,7 +22,7 @@ const TABS = [
 ];
 
 export default function App() {
-  const { workouts, addWorkout, upsertSteps, loading, error } = useWorkouts();
+  const { workouts, addWorkout, upsertSteps, deleteWorkout, loading, error } = useWorkouts();
   const [tab, setTab] = useState('home');
   const [logPerson, setLogPerson] = useState(null);
 
@@ -63,7 +63,7 @@ export default function App() {
         )}
         {tab === 'steps' && <Steps workouts={workouts} persons={PERSONS} onUpsertSteps={upsertSteps} />}
         {tab === 'stats' && <Charts workouts={workouts} persons={PERSONS} />}
-        {tab === 'history' && <WeeklyHistory workouts={workouts} persons={PERSONS} />}
+        {tab === 'history' && <WeeklyHistory workouts={workouts} persons={PERSONS} onDelete={deleteWorkout} />}
       </main>
 
       <nav className="bottom-nav">

@@ -75,5 +75,11 @@ export function useWorkouts() {
     }
   };
 
-  return { workouts, addWorkout, upsertSteps, loading, error };
+  const deleteWorkout = async (id) => {
+    const { error: err } = await supabase.from('workouts').delete().eq('id', id);
+    if (err) throw err;
+    setWorkouts((prev) => prev.filter((w) => w.id !== id));
+  };
+
+  return { workouts, addWorkout, upsertSteps, deleteWorkout, loading, error };
 }

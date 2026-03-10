@@ -528,6 +528,39 @@ body {
 /* ── Weekly History ───────────────────────────────────────── */
 .history { display: flex; flex-direction: column; gap: 20px; }
 
+.empty-hint { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
+
+.recent-list { display: flex; flex-direction: column; gap: 8px; }
+
+.recent-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.recent-info { display: flex; flex-direction: column; gap: 2px; }
+
+.recent-name { font-size: 0.85rem; font-weight: 800; }
+
+.recent-meta { font-size: 0.75rem; color: var(--muted); font-weight: 500; text-transform: capitalize; }
+
+.delete-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--muted);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s, background 0.15s;
+}
+
+.delete-btn:hover { color: #e53e3e; background: #fff0f0; }
+
 .empty-state {
   text-align: center;
   padding: 56px 20px;
