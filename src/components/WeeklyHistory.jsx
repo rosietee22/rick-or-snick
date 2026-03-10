@@ -9,12 +9,12 @@ export default function WeeklyHistory({ workouts, persons, onDelete }) {
     .filter((w) => w.type !== 'steps')
     .slice(0, 20);
 
-  const getName = (personId) => persons.find((p) => p.id === personId)?.name ?? personId;
+  const getPerson = (personId) => persons.find((p) => p.id === personId);
 
-  const formatDate = (iso) => {
-    const d = new Date(iso);
-    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-  };
+  const formatDay = (iso) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric' });
+  const formatMonthYear = (iso) => new Date(iso).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+
+  const tint = (hex) => hex + '14'; // ~8% opacity
 
   const handleDelete = (id) => {
     if (window.confirm('Delete this workout?')) onDelete(id);
@@ -29,18 +29,25 @@ export default function WeeklyHistory({ workouts, persons, onDelete }) {
           <p className="empty-hint">No workouts logged yet.</p>
         ) : (
           <div className="recent-list">
-            {recentWorkouts.map((w) => (
-              <div key={w.id} className="recent-row">
-                <div className="recent-info">
-                  <span className="recent-name">{getName(w.person)}</span>
-                  <span className="recent-meta">{w.activity ?? w.type} · {formatDate(w.date)}</span>
-                  {w.note && <span className="recent-notes">{w.note}</span>}
+            {recentWorkouts.map((w) => {
+              const person = getPerson(w.person);
+              return (
+                <div key={w.id} className="recent-row" style={{ backgroundColor: tint(person?.chartColor ?? '#111111') }}>
+                  <div className="recent-date">
+                    <span className="recent-day">{formatDay(w.date)}</span>
+                    <span className="recent-month">{formatMonthYear(w.date)}</span>
+                  </div>
+                  <div className="recent-info">
+                    <span className="recent-activity">{w.activity ?? w.type}</span>
+                    {w.note && <span className="recent-notes">{w.note}</span>}
+                    <span className="recent-name">{person?.name}</span>
+                  </div>
+                  <button className="delete-btn" onClick={() => handleDelete(w.id)} aria-label="Delete">
+                    <Trash2 size={15} strokeWidth={2} />
+                  </button>
                 </div>
-                <button className="delete-btn" onClick={() => handleDelete(w.id)} aria-label="Delete">
-                  <Trash2 size={15} strokeWidth={2} />
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>

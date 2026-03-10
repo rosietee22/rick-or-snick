@@ -539,18 +539,54 @@ body {
 .recent-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 12px 14px;
+  gap: 14px;
+  border-radius: 14px;
+  padding: 14px;
 }
 
-.recent-info { display: flex; flex-direction: column; gap: 2px; }
+.recent-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+  flex-shrink: 0;
+}
 
-.recent-name { font-size: 0.85rem; font-weight: 800; }
+.recent-day {
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text);
+  letter-spacing: -1px;
+}
 
-.recent-meta { font-size: 0.75rem; color: var(--muted); font-weight: 500; text-transform: capitalize; }
-.recent-notes { font-size: 0.75rem; color: var(--text); font-style: italic; }
+.recent-month {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.recent-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+
+.recent-activity {
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: capitalize;
+  color: var(--text);
+}
+
+.recent-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.recent-notes { font-size: 0.78rem; color: var(--text); font-style: italic; opacity: 0.7; }
 
 .delete-btn {
   background: none;
