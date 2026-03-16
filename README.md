@@ -119,7 +119,8 @@ src/
 ├── hooks/
 │   ├── useAuth.js           # Supabase auth session
 │   ├── useCompetition.js    # Competition + player profiles
-│   └── useWorkouts.js       # Workout + steps data + realtime
+│   ├── useWorkouts.js       # Workout + steps data + realtime
+│   └── useLeaderboard.js    # Global this-week leaderboard (public)
 ├── lib/
 │   └── supabase.js          # Supabase client
 └── utils/
