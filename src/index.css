@@ -830,6 +830,67 @@ body {
 
 .google-btn:hover { border-color: var(--accent); background: #f5f8ff; }
 
+/* ── Login leaderboard ────────────────────────────────────── */
+.login-leaderboard {
+  width: 100%;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.login-leaderboard-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.login-leaderboard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-leaderboard-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.llb-rank {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--muted);
+  width: 16px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.llb-name {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.llb-pts {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* ── Global leaderboard (Stats page) ─────────────────────── */
+.global-leaderboard {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
 /* ── Onboarding screen ────────────────────────────────────── */
 .onboarding-screen {
   min-height: 100svh;

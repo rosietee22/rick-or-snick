@@ -1,6 +1,8 @@
 import { supabase } from '../lib/supabase';
+import { useLeaderboard } from '../hooks/useLeaderboard';
 
 export default function LoginScreen() {
+  const { leaderboard, loading } = useLeaderboard();
   const handleSignIn = () => {
     // Preserve any invite token in the URL so it survives the OAuth redirect
     const params = new URLSearchParams(window.location.search);
@@ -20,6 +22,22 @@ export default function LoginScreen() {
       <div className="login-inner">
         <h1 className="app-title login-title">HEATED RIVALRY</h1>
         <p className="login-sub">Track your fitness. Beat your rival.</p>
+
+        {!loading && leaderboard.length > 0 && (
+          <div className="login-leaderboard">
+            <p className="login-leaderboard-title">This week</p>
+            <ol className="login-leaderboard-list">
+              {leaderboard.map((row, i) => (
+                <li key={i} className="login-leaderboard-row">
+                  <span className="llb-rank">{i + 1}</span>
+                  <span className="llb-name">{row.first_name}</span>
+                  <span className="llb-pts">{row.points} pts</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
         <button className="google-btn" onClick={handleSignIn}>
           <GoogleIcon />
           Sign in with Google
