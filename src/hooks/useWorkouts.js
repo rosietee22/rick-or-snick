@@ -1,78 +1,133 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-export function useWorkouts() {
+// Convert a row from the `steps` table into the workout-shaped object
+// that all existing components expect.
+function stepsToWorkout(s) {
+  return {
+    id: `steps-${s.user_id}-${s.date}`,
+    person: s.user_id,
+    type: 'steps',
+    steps: s.steps,
+    date: typeof s.date === 'string' && s.date.length === 10
+      ? `${s.date}T12:00:00.000Z`
+      : s.date,
+    competition_id: s.competition_id,
+  };
+}
+
+export function useWorkouts(competitionId) {
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Initial load
-    supabase
-      .from('workouts')
-      .select('*')
-      .order('date', { ascending: false })
-      .then(({ data, error: err }) => {
-        if (err) {
-          setError(err.message);
-        } else {
-          setWorkouts(data ?? []);
-        }
+    if (!competitionId) return;
+
+    setLoading(true);
+
+    const fetchAll = async () => {
+      const [
+        { data: wData, error: wErr },
+        { data: sData, error: sErr },
+      ] = await Promise.all([
+        supabase
+          .from('workouts')
+          .select('*')
+          .eq('competition_id', competitionId)
+          .order('date', { ascending: false }),
+        supabase
+          .from('steps')
+          .select('*')
+          .eq('competition_id', competitionId),
+      ]);
+
+      if (wErr || sErr) {
+        setError((wErr || sErr).message);
         setLoading(false);
-      });
+        return;
+      }
+
+      const stepsAsWorkouts = (sData ?? []).map(stepsToWorkout);
+      const merged = [...(wData ?? []), ...stepsAsWorkouts]
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      setWorkouts(merged);
+      setLoading(false);
+    };
+
+    fetchAll();
 
     const channel = supabase
-      .channel('workouts-realtime')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'workouts' }, (payload) => {
-        setWorkouts((prev) => {
-          if (prev.some((w) => w.id === payload.new.id)) return prev;
-          return [payload.new, ...prev];
-        });
-      })
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'workouts' }, (payload) => {
-        setWorkouts((prev) => prev.map((w) => w.id === payload.new.id ? { ...w, ...payload.new } : w));
-      })
+      .channel(`workouts-${competitionId}`)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'workouts', filter: `competition_id=eq.${competitionId}` },
+        (payload) => {
+          setWorkouts((prev) => {
+            if (prev.some((w) => w.id === payload.new.id)) return prev;
+            return [payload.new, ...prev];
+          });
+        },
+      )
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'workouts', filter: `competition_id=eq.${competitionId}` },
+        (payload) => {
+          setWorkouts((prev) =>
+            prev.map((w) => w.id === payload.new.id ? { ...w, ...payload.new } : w),
+          );
+        },
+      )
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'steps', filter: `competition_id=eq.${competitionId}` },
+        (payload) => {
+          const sw = stepsToWorkout(payload.new);
+          setWorkouts((prev) => {
+            if (prev.some((w) => w.id === sw.id)) return prev;
+            return [sw, ...prev];
+          });
+        },
+      )
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'steps', filter: `competition_id=eq.${competitionId}` },
+        (payload) => {
+          const sw = stepsToWorkout(payload.new);
+          setWorkouts((prev) => prev.map((w) => w.id === sw.id ? sw : w));
+        },
+      )
       .subscribe();
 
     return () => supabase.removeChannel(channel);
-  }, []);
+  }, [competitionId]);
 
   const addWorkout = async (workout) => {
     const entry = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       ...workout,
+      competition_id: competitionId,
       date: new Date().toISOString(),
     };
-
     const { error: err } = await supabase.from('workouts').insert(entry);
     if (err) throw err;
     return entry;
   };
 
   const upsertSteps = async (personId, dateKey, stepCount) => {
-    const existing = workouts.find(
-      (w) => w.person === personId && w.type === 'steps' && w.date.slice(0, 10) === dateKey,
+    const { error: err } = await supabase.from('steps').upsert(
+      { user_id: personId, competition_id: competitionId, date: dateKey, steps: stepCount },
+      { onConflict: 'user_id,date' },
     );
+    if (err) throw err;
 
-    if (existing) {
-      const { error: err } = await supabase
-        .from('workouts')
-        .update({ steps: stepCount })
-        .eq('id', existing.id);
-      if (err) throw err;
-      setWorkouts((prev) => prev.map((w) => w.id === existing.id ? { ...w, steps: stepCount } : w));
-    } else {
-      const entry = {
-        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-        person: personId,
-        type: 'steps',
-        steps: stepCount,
-        date: `${dateKey}T12:00:00.000Z`,
-      };
-      const { error: err } = await supabase.from('workouts').insert(entry);
-      if (err) throw err;
-      setWorkouts((prev) => [entry, ...prev]);
-    }
+    // Optimistic local update
+    const sw = stepsToWorkout({ user_id: personId, competition_id: competitionId, date: dateKey, steps: stepCount });
+    setWorkouts((prev) => {
+      if (prev.some((w) => w.id === sw.id)) return prev.map((w) => w.id === sw.id ? sw : w);
+      return [sw, ...prev];
+    });
   };
 
   const deleteWorkout = async (id) => {

@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { Home, Plus, Footprints, BarChart2, Trophy } from 'lucide-react';
+import { useAuth } from './hooks/useAuth';
+import { useCompetition } from './hooks/useCompetition';
 import { useWorkouts } from './hooks/useWorkouts';
+import LoginScreen from './components/LoginScreen';
+import OnboardingScreen from './components/OnboardingScreen';
 import Scoreboard from './components/Scoreboard';
 import LogWorkout from './components/LogWorkout';
 import Steps from './components/Steps';
 import Charts from './components/Charts';
 import WeeklyHistory from './components/WeeklyHistory';
 import './index.css';
-
-export const PERSONS = [
-  { id: 'person1', name: 'Phoebe', chartColor: '#0057FF' },
-  { id: 'person2', name: 'Rosie',  chartColor: '#111111' },
-];
 
 const TABS = [
   { id: 'home',    Icon: Home,       label: 'Home'    },
@@ -22,7 +21,9 @@ const TABS = [
 ];
 
 export default function App() {
-  const { workouts, addWorkout, upsertSteps, deleteWorkout, loading, error } = useWorkouts();
+  const { user, loading: authLoading } = useAuth();
+  const { competition, persons, inviteToken, loading: compLoading, refresh: refreshComp } = useCompetition(user?.id);
+  const { workouts, addWorkout, upsertSteps, deleteWorkout, loading: workoutsLoading, error } = useWorkouts(competition?.id);
   const [tab, setTab] = useState('home');
   const [logPerson, setLogPerson] = useState(null);
 
@@ -37,11 +38,28 @@ export default function App() {
     setLogPerson(null);
   };
 
+  // Still determining auth state
+  if (authLoading) return null;
+
+  // Not signed in
+  if (!user) return <LoginScreen />;
+
+  // Determining competition state
+  if (compLoading) return null;
+
+  // No competition yet — show create/join flow
+  if (!competition) {
+    return <OnboardingScreen user={user} onJoined={refreshComp} />;
+  }
+
+  const waitingForRival = !competition.player2_id;
+  const inviteLink = inviteToken ? `${window.location.origin}?invite=${inviteToken}` : null;
+  const loading = workoutsLoading;
+
   return (
     <div className="app">
       <header className="app-header">
         <h1 className="app-title">HEATED RIVALRY</h1>
-        <p className="app-sub">Who&rsquo;s winning this week?</p>
       </header>
 
       <main className="app-main">
@@ -50,20 +68,28 @@ export default function App() {
             Database not connected. Check your <code>.env.local</code> Supabase keys.
           </div>
         )}
+
+        {waitingForRival && inviteLink && (
+          <div className="waiting-banner">
+            <span>Waiting for your rival to join.</span>
+            <CopyableLink link={inviteLink} />
+          </div>
+        )}
+
         {tab === 'home' && (
-          <Scoreboard workouts={workouts} persons={PERSONS} onLog={openLog} loading={loading} />
+          <Scoreboard workouts={workouts} persons={persons} onLog={openLog} loading={loading} />
         )}
         {tab === 'log' && (
           <LogWorkout
-            persons={PERSONS}
+            persons={persons}
             initialPerson={logPerson}
             onAdd={handleLogged}
             onCancel={() => { setTab('home'); setLogPerson(null); }}
           />
         )}
-        {tab === 'steps' && <Steps workouts={workouts} persons={PERSONS} onUpsertSteps={upsertSteps} />}
-        {tab === 'stats' && <Charts workouts={workouts} persons={PERSONS} />}
-        {tab === 'history' && <WeeklyHistory workouts={workouts} persons={PERSONS} onDelete={deleteWorkout} />}
+        {tab === 'steps' && <Steps workouts={workouts} persons={persons} onUpsertSteps={upsertSteps} />}
+        {tab === 'stats' && <Charts workouts={workouts} persons={persons} />}
+        {tab === 'history' && <WeeklyHistory workouts={workouts} persons={persons} onDelete={deleteWorkout} />}
       </main>
 
       <nav className="bottom-nav">
@@ -82,5 +108,19 @@ export default function App() {
         ))}
       </nav>
     </div>
+  );
+}
+
+function CopyableLink({ link }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    await navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button className="copy-btn copy-btn--inline" onClick={copy}>
+      {copied ? 'Copied!' : 'Copy invite link'}
+    </button>
   );
 }
