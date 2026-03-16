@@ -19,19 +19,15 @@ export default function Scoreboard({ workouts, persons, onLog, loading }) {
       .reduce((sum, w) => sum + (w.steps || 0), 0),
   }));
 
-  const weekLeader =
-    weekBreakdown[0].total > weekBreakdown[1].total
-      ? weekBreakdown[0].person
-      : weekBreakdown[1].total > weekBreakdown[0].total
-      ? weekBreakdown[1].person
-      : null;
+  const weekLeader = weekBreakdown.length < 2 ? weekBreakdown[0]?.person ?? null
+    : weekBreakdown[0].total > weekBreakdown[1].total ? weekBreakdown[0].person
+    : weekBreakdown[1].total > weekBreakdown[0].total ? weekBreakdown[1].person
+    : null;
 
-  const allTimeLeader =
-    allTimeBreakdown[0].total > allTimeBreakdown[1].total
-      ? allTimeBreakdown[0].person
-      : allTimeBreakdown[1].total > allTimeBreakdown[0].total
-      ? allTimeBreakdown[1].person
-      : null;
+  const allTimeLeader = allTimeBreakdown.length < 2 ? allTimeBreakdown[0]?.person ?? null
+    : allTimeBreakdown[0].total > allTimeBreakdown[1].total ? allTimeBreakdown[0].person
+    : allTimeBreakdown[1].total > allTimeBreakdown[0].total ? allTimeBreakdown[1].person
+    : null;
 
   return (
     <div className="scoreboard">
