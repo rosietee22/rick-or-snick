@@ -2,7 +2,7 @@
 
 A mobile-first web app for two people to track and compete on workout consistency. Sign in with Google, create a competition, invite your rival, and both of you see live synced data from any device.
 
-Live at: [heated-rivalry.vercel.app](https://heated-rivalry.vercel.app) *(update with your URL)*
+Live at: [heatedrivalry.app](https://heatedrivalry.app)
 
 ---
 
