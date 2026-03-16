@@ -55,7 +55,7 @@ body {
 
 .app-main {
   flex: 1;
-  padding: 28px 16px calc(var(--nav-h) + 28px);
+  padding: 28px 16px calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 28px);
   overflow-y: auto;
 }
 
@@ -93,7 +93,7 @@ body {
   transform: translateX(-50%);
   width: 100%;
   max-width: 480px;
-  height: var(--nav-h);
+  height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
   background: var(--bg);
   border-top: 1px solid var(--border);
   display: flex;
@@ -934,7 +934,7 @@ body {
   font-size: 0.82rem;
   color: var(--accent);
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 24px;
 }
 
 .copy-btn--inline {
