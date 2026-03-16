@@ -629,12 +629,41 @@ body {
   gap: 8px;
 }
 
+.history-week-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .history-week {
   font-size: 0.65rem;
   color: var(--muted);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+}
+
+.history-score-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.history-score-sep {
+  color: var(--border);
+  font-size: 0.9rem;
+  margin: 0 4px;
+}
+
+.history-score-name {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.history-score-pts {
+  font-weight: 800;
+  color: var(--text);
 }
 
 .badge {

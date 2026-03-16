@@ -1,6 +1,5 @@
 import { Trophy, Trash2 } from 'lucide-react';
 import { getPastWeekWinners } from '../utils/scoring';
-import { PERSONS } from '../App';
 
 export default function WeeklyHistory({ workouts, persons, onDelete }) {
   const history = getPastWeekWinners(workouts, persons);
@@ -15,6 +14,7 @@ export default function WeeklyHistory({ workouts, persons, onDelete }) {
   const formatMonthYear = (iso) => new Date(iso).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 
   const tint = (hex) => hex + '14'; // ~8% opacity
+  const firstName = (name) => name?.split(' ')[0] ?? name;
 
   const handleDelete = (id) => {
     if (window.confirm('Delete this workout?')) onDelete(id);
@@ -65,17 +65,21 @@ export default function WeeklyHistory({ workouts, persons, onDelete }) {
           <div className="history-list">
             {history.map(({ weekKey, label, winner, scores, tied }) => (
               <div key={weekKey} className="history-row">
-                <div className="history-week">{label}</div>
-                <div className="history-result">
+                <div className="history-week-header">
+                  <div className="history-week">{label}</div>
                   {tied ? (
                     <span className="badge badge-tie">Tied</span>
                   ) : (
-                    <span className="badge badge-win">{winner.name} won</span>
+                    <span className="badge badge-win">{firstName(winner.name)} won</span>
                   )}
                 </div>
                 <div className="history-scores">
-                  {scores.map(({ person: p, points }) => (
-                    <span key={p.id}>{p.name}: {points}</span>
+                  {scores.map(({ person: p, points }, i) => (
+                    <span key={p.id} className="history-score-item">
+                      {i > 0 && <span className="history-score-sep">·</span>}
+                      <span className="history-score-name">{firstName(p.name)}</span>
+                      <span className="history-score-pts">{points}</span>
+                    </span>
                   ))}
                 </div>
               </div>
