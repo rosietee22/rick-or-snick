@@ -29,11 +29,12 @@ function formatSteps(n) {
   return String(n);
 }
 
-export default function Steps({ workouts, persons, onUpsertSteps }) {
+export default function Steps({ workouts, persons, onUpsertSteps, userId }) {
   const [weekOffset, setWeekOffset] = useState(0);
   const [editing, setEditing] = useState(null); // { personId, dateKey }
   const [inputValue, setInputValue] = useState('');
   const [saving, setSaving] = useState(false);
+  const [rivalError, setRivalError] = useState(false);
 
   const weekDates = getWeekDates(weekOffset);
   const todayKey = new Date().toISOString().slice(0, 10);
@@ -46,6 +47,11 @@ export default function Steps({ workouts, persons, onUpsertSteps }) {
   };
 
   const handleDayTap = (personId, dateKey) => {
+    if (userId && personId !== userId) {
+      setRivalError(true);
+      setTimeout(() => setRivalError(false), 2500);
+      return;
+    }
     if (editing?.personId === personId && editing?.dateKey === dateKey) {
       setEditing(null);
       return;
@@ -83,6 +89,10 @@ export default function Steps({ workouts, persons, onUpsertSteps }) {
           <ChevronRight size={18} strokeWidth={2.5} />
         </button>
       </div>
+
+      {rivalError && (
+        <p className="steps-rival-error">You can only log your own steps</p>
+      )}
 
       {persons.map((p) => {
         const isEditingThisPerson = editing?.personId === p.id;

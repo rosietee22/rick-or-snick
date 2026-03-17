@@ -104,7 +104,7 @@ export default function App() {
                 onCancel={() => { setTab('home'); setLogPerson(null); }}
               />
             ) : (
-              <Steps workouts={workouts} persons={persons} onUpsertSteps={upsertSteps} />
+              <Steps workouts={workouts} persons={persons} onUpsertSteps={upsertSteps} userId={user.id} />
             )}
           </div>
         )}

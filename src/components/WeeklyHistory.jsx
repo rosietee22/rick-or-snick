@@ -22,6 +22,8 @@ export default function WeeklyHistory({ workouts, persons, onDelete, userId }) {
     if (window.confirm('Delete this workout?')) onDelete(id);
   };
 
+  const isOwn = (personId) => !userId || personId === userId;
+
   return (
     <div className="history">
       {/* Recent workouts */}
@@ -44,9 +46,11 @@ export default function WeeklyHistory({ workouts, persons, onDelete, userId }) {
                     {w.note && <span className="recent-notes">{w.note}</span>}
                     <span className="recent-name">{person?.name}</span>
                   </div>
-                  <button className="delete-btn" onClick={() => handleDelete(w.id)} aria-label="Delete">
-                    <Trash2 size={15} strokeWidth={2} />
-                  </button>
+                  {isOwn(w.person) && (
+                    <button className="delete-btn" onClick={() => handleDelete(w.id)} aria-label="Delete">
+                      <Trash2 size={15} strokeWidth={2} />
+                    </button>
+                  )}
                 </div>
               );
             })}
