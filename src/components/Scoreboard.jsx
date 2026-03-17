@@ -1,15 +1,24 @@
-import { Crown, Dumbbell, Footprints } from 'lucide-react';
-import { getPointBreakdown, getWeekKey } from '../utils/scoring';
+import { Crown, Dumbbell, Footprints, Trophy } from 'lucide-react';
+import { getPointBreakdown, getWeekKey, getPastWeekWinners } from '../utils/scoring';
 
-export default function Scoreboard({ workouts, persons, onLog, loading }) {
+export default function Scoreboard({ workouts, persons, onLog, loading, userId }) {
   const currentWeek = getWeekKey(new Date().toISOString());
+  const firstName = (name) => name?.split(' ')[0] ?? name;
 
   const weekWorkouts = workouts.filter((w) => getWeekKey(w.date) === currentWeek);
+
+  const history = persons.length >= 2 ? getPastWeekWinners(workouts, persons) : [];
+  const lastWeek = history[0] ?? null;
 
   const weekBreakdown = persons.map((p) => ({
     person: p,
     ...getPointBreakdown(weekWorkouts, p.id),
   }));
+
+  const weeksWonMap = {};
+  persons.forEach(p => {
+    weeksWonMap[p.id] = history.filter(h => !h.tied && h.winner?.id === p.id).length;
+  });
 
   const allTimeBreakdown = persons.map((p) => ({
     person: p,
@@ -17,6 +26,7 @@ export default function Scoreboard({ workouts, persons, onLog, loading }) {
     totalSteps: workouts
       .filter((w) => w.person === p.id && w.type === 'steps')
       .reduce((sum, w) => sum + (w.steps || 0), 0),
+    weeksWon: weeksWonMap[p.id] ?? 0,
   }));
 
   const weekLeader = weekBreakdown.length < 2 ? null
@@ -29,8 +39,40 @@ export default function Scoreboard({ workouts, persons, onLog, loading }) {
     : allTimeBreakdown[1].total > allTimeBreakdown[0].total ? allTimeBreakdown[1].person
     : null;
 
+  const iWonLastWeek = lastWeek && !lastWeek.tied && lastWeek.winner?.id === userId;
+
   return (
     <div className="scoreboard">
+
+      {/* Last week result */}
+      {lastWeek && (
+        <section>
+          <h2 className="section-title">Last Week</h2>
+          <div className={`last-week-card${iWonLastWeek ? ' last-week-win' : ''}`}>
+            <div className="last-week-top">
+              <Trophy size={18} strokeWidth={2} className="last-week-trophy" />
+              <span className="last-week-result">
+                {lastWeek.tied
+                  ? 'It was a draw'
+                  : iWonLastWeek
+                    ? 'You won!'
+                    : `${firstName(lastWeek.winner.name)} won`}
+              </span>
+            </div>
+            <div className="last-week-scores">
+              {lastWeek.scores.map(({ person: p, points }, i) => (
+                <span key={p.id} className="last-week-score-item">
+                  {i > 0 && <span className="last-week-sep">·</span>}
+                  <span className="last-week-score-name">{firstName(p.name)}</span>
+                  <span className="last-week-score-pts">{points}</span>
+                </span>
+              ))}
+            </div>
+            <div className="last-week-label">{lastWeek.label}</div>
+          </div>
+        </section>
+      )}
+
       {/* Weekly scores */}
       <section>
         <h2 className="section-title">This Week</h2>
@@ -84,7 +126,7 @@ export default function Scoreboard({ workouts, persons, onLog, loading }) {
       <section>
         <h2 className="section-title">All Time</h2>
         <div className="alltime-list">
-          {allTimeBreakdown.map(({ person: p, workoutPts, stepPts, total, totalSteps }) => {
+          {allTimeBreakdown.map(({ person: p, workoutPts, stepPts, total, totalSteps, weeksWon }) => {
             const leading = allTimeLeader?.id === p.id;
             return (
               <div key={p.id} className="alltime-row">
@@ -99,13 +141,34 @@ export default function Scoreboard({ workouts, persons, onLog, loading }) {
                   <span className="alltime-detail-item">
                     <Footprints size={11} strokeWidth={2} /> {stepPts} step pts
                   </span>
-                  {totalSteps > 0 && (
-                    <span>{totalSteps.toLocaleString()} steps total</span>
+                  {weeksWon > 0 && (
+                    <span className="alltime-detail-item">
+                      <Trophy size={11} strokeWidth={2} /> {weeksWon} {weeksWon === 1 ? 'week' : 'weeks'} won
+                    </span>
                   )}
                 </div>
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section>
+        <h2 className="section-title">How it works</h2>
+        <div className="how-it-works">
+          <div className="how-row">
+            <Dumbbell size={14} strokeWidth={2} className="how-icon" />
+            <span>Each workout logged = <strong>1 point</strong></span>
+          </div>
+          <div className="how-row">
+            <Footprints size={14} strokeWidth={2} className="how-icon" />
+            <span>10,000 steps = <strong>1 point</strong> — log daily via the Log tab</span>
+          </div>
+          <div className="how-row">
+            <Trophy size={14} strokeWidth={2} className="how-icon" />
+            <span>Most points by Sunday wins the week</span>
+          </div>
         </div>
       </section>
 

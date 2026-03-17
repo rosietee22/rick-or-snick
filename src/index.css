@@ -1033,6 +1033,176 @@ body {
   border-radius: 8px;
 }
 
+/* ── Nav badge ────────────────────────────────────────────── */
+.nav-icon-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.nav-badge {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  background: #ff3b30;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+
+/* ── Log screen (combined workout + steps) ────────────────── */
+.log-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.log-mode-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 4px;
+}
+
+.log-mode-btn {
+  padding: 10px 8px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.log-mode-btn.active {
+  background: var(--bg);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+/* ── Last week card ───────────────────────────────────────── */
+.last-week-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.last-week-win {
+  background: var(--accent);
+}
+
+.last-week-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.last-week-trophy {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.last-week-win .last-week-trophy {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.last-week-result {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.last-week-win .last-week-result {
+  color: #fff;
+}
+
+.last-week-scores {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.last-week-win .last-week-scores {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.last-week-score-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.last-week-score-name { font-weight: 600; }
+.last-week-score-pts  { font-weight: 900; }
+
+.last-week-sep {
+  color: var(--border);
+  margin: 0 2px;
+}
+
+.last-week-win .last-week-sep {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.last-week-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.last-week-win .last-week-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ── How it works ─────────────────────────────────────────── */
+.how-it-works {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.how-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.how-row strong { color: var(--text); font-weight: 700; }
+
+.how-icon {
+  flex-shrink: 0;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
 /* ── Desktop ──────────────────────────────────────────────── */
 @media (min-width: 640px) {
   .app { max-width: 500px; }
