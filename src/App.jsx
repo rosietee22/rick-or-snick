@@ -109,7 +109,7 @@ export default function App() {
           </div>
         )}
         {tab === 'stats' && <Charts workouts={workouts} persons={persons} />}
-        {tab === 'history' && <WeeklyHistory workouts={workouts} persons={persons} onDelete={deleteWorkout} />}
+        {tab === 'history' && <WeeklyHistory workouts={workouts} persons={persons} onDelete={deleteWorkout} userId={user?.id} />}
       </main>
 
       <nav className="bottom-nav">
