@@ -39,10 +39,13 @@ export default function App() {
     setLogPerson(null);
   };
 
-  // Badge: show dot on Log if current user hasn't logged steps today
-  const todayKey = new Date().toISOString().slice(0, 10);
+  // Badge: show dot on Log if current user hasn't logged yesterday's steps
+  // (steps should be logged at end of day, not during)
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayKey = yesterday.toISOString().slice(0, 10);
   const stepsMissingToday = !!(user && persons.length > 0 &&
-    !workouts.some(w => w.person === user.id && w.type === 'steps' && w.date.slice(0, 10) === todayKey));
+    !workouts.some(w => w.person === user.id && w.type === 'steps' && w.date.slice(0, 10) === yesterdayKey));
 
   if (authLoading) return null;
   if (!user) return <LoginScreen />;
