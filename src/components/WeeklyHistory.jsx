@@ -73,7 +73,7 @@ export default function WeeklyHistory({ workouts, persons, onDelete, userId }) {
                           <Footprints size={13} strokeWidth={2} />
                           {w.steps?.toLocaleString()} steps
                         </span>
-                        <span className="recent-notes">+{stepPts} {stepPts === 1 ? 'pt' : 'pts'}</span>
+                        {stepPts > 1 && <span className="recent-notes">+{stepPts} pts</span>}
                       </>
                     ) : (
                       <>
