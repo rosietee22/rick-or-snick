@@ -10,7 +10,12 @@ import LogWorkout from './components/LogWorkout';
 import Steps from './components/Steps';
 import Charts from './components/Charts';
 import WeeklyHistory from './components/WeeklyHistory';
+import PrivacyPolicy from './components/PrivacyPolicy';
 import './index.css';
+
+if (window.location.pathname === '/privacy') {
+  document.title = 'Privacy Policy — Heated Rivalry';
+}
 
 const TABS = [
   { id: 'home',    Icon: Home,      label: 'Home'    },
@@ -46,6 +51,8 @@ export default function App() {
   const yesterdayKey = yesterday.toISOString().slice(0, 10);
   const stepsMissingToday = !!(user && persons.length > 0 &&
     !workouts.some(w => w.person === user.id && w.type === 'steps' && w.date.slice(0, 10) === yesterdayKey));
+
+  if (window.location.pathname === '/privacy') return <PrivacyPolicy />;
 
   if (authLoading) return null;
   if (!user) return <LoginScreen />;
