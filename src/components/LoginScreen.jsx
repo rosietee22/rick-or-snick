@@ -126,10 +126,13 @@ export default function LoginScreen() {
             </button>
           </div>
         </div>
-        <button className="login-scroll-btn" onClick={() => scrollTo(previewRef)} aria-label="See preview">
-          <span className="login-scroll-label">See a preview</span>
-          <ChevronDown size={20} strokeWidth={2.5} />
-        </button>
+        <div className="login-bottom">
+          <a href="/privacy" className="login-privacy-link">Privacy &amp; Terms</a>
+          <button className="login-scroll-btn" onClick={() => scrollTo(previewRef)} aria-label="See preview">
+            <span className="login-scroll-label">See a preview</span>
+            <ChevronDown size={20} strokeWidth={2.5} />
+          </button>
+        </div>
       </div>
 
       {/* Panel 2 — preview */}
