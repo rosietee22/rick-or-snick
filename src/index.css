@@ -883,7 +883,7 @@ body {
 
 .login-scroll-btn {
   position: absolute;
-  bottom: 28px;
+  bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -908,7 +908,9 @@ body {
 .preview-back-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  width: 100%;
   background: none;
   border: none;
   color: var(--muted);
@@ -930,9 +932,11 @@ body {
 }
 
 .preview-scoreboard {
-  padding: 0 20px 40px;
+  padding: 0 20px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   max-width: 480px;
   margin: 0 auto;
+  zoom: 0.82;
 }
 
 .login-inner {
