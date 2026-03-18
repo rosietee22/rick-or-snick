@@ -868,24 +868,23 @@ body {
 .login-panel {
   height: 100svh;
   scroll-snap-align: start;
-  position: relative;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-panel--main {
+  background: var(--bg);
 }
 
 .login-screen {
-  min-height: 100svh;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: var(--bg);
 }
 
 .login-scroll-btn {
-  position: absolute;
-  bottom: calc(28px + env(safe-area-inset-bottom, 0px));
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -894,7 +893,7 @@ body {
   border: none;
   color: var(--muted);
   cursor: pointer;
-  padding: 8px;
+  padding: 20px 8px calc(20px + env(safe-area-inset-bottom, 0px));
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -910,15 +909,24 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  width: 100%;
   background: none;
   border: none;
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
-  padding: 20px 20px 0;
+  padding: 20px 20px 12px;
   -webkit-tap-highlight-color: transparent;
+}
+
+.phone-frame-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px calc(24px + env(safe-area-inset-bottom, 0px));
+  gap: 10px;
 }
 
 .preview-label {
@@ -928,16 +936,41 @@ body {
   letter-spacing: 0.1em;
   color: var(--muted);
   text-align: center;
-  margin: 8px 0 4px;
 }
 
-.preview-scoreboard {
-  padding: 0 20px;
-  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-  max-width: 480px;
-  margin: 0 auto;
-  zoom: 0.82;
+.phone-mockup {
+  width: min(240px, 64vw);
+  aspect-ratio: 9 / 19.5;
+  border: 7px solid #1c1c1e;
+  border-radius: 38px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  position: relative;
+  flex-shrink: 0;
 }
+
+.phone-notch {
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 4px;
+  background: #1c1c1e;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.phone-screen {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 18px;
+  scrollbar-width: none;
+}
+
+.phone-screen::-webkit-scrollbar { display: none; }
 
 .login-inner {
   display: flex;

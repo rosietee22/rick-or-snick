@@ -55,7 +55,7 @@ export default function LoginScreen() {
   return (
     <div className="login-scroll-container">
       {/* Panel 1 — login */}
-      <div className="login-panel" ref={loginRef}>
+      <div className="login-panel login-panel--main" ref={loginRef}>
         <div className="login-screen">
           <div className="login-inner">
             <h1 className="app-title login-title">HEATED RIVALRY</h1>
@@ -73,19 +73,24 @@ export default function LoginScreen() {
       </div>
 
       {/* Panel 2 — preview */}
-      <div className="login-panel" ref={previewRef}>
+      <div className="login-panel login-panel--preview" ref={previewRef}>
         <button className="preview-back-btn" onClick={() => scrollTo(loginRef)}>
           <ChevronUp size={16} strokeWidth={2.5} /> Back to sign in
         </button>
-        <div className="preview-label">Example</div>
-        <div className="preview-scoreboard">
-          <Scoreboard
-            workouts={DEMO_WORKOUTS}
-            persons={DEMO_PERSONS}
-            onLog={() => {}}
-            loading={false}
-            userId="demo-1"
-          />
+        <div className="phone-frame-wrapper">
+          <div className="preview-label">Example</div>
+          <div className="phone-mockup">
+            <div className="phone-notch" />
+            <div className="phone-screen">
+              <Scoreboard
+                workouts={DEMO_WORKOUTS}
+                persons={DEMO_PERSONS}
+                onLog={() => {}}
+                loading={false}
+                userId="demo-1"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
