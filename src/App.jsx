@@ -58,7 +58,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
+      <header className="app-header" onClick={() => setTab('home')} style={{ cursor: 'pointer' }}>
         <h1 className="app-title">HEATED RIVALRY</h1>
       </header>
 

@@ -1006,6 +1006,9 @@ body {
 
 .phone-nav-btn--active { color: var(--accent); }
 
+.phone-mockup .app-header { padding: 12px 16px 10px; flex-shrink: 0; position: static; }
+.phone-mockup .app-title  { font-size: 1.6rem; }
+
 .login-inner {
   display: flex;
   flex-direction: column;

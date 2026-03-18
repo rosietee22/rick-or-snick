@@ -1,7 +1,11 @@
-import { useRef } from 'react';
-import { ChevronDown, ChevronUp, Home, Plus, BarChart2, Trophy } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ChevronDown, ChevronUp, Home, Plus, BarChart2, Trophy, Dumbbell, Footprints } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import Scoreboard from './Scoreboard';
+import LogWorkout from './LogWorkout';
+import Charts from './Charts';
+import WeeklyHistory from './WeeklyHistory';
+import Steps from './Steps';
 
 const DEMO_PERSONS = [
   { id: 'demo-1', name: 'Alex',   chartColor: '#0057ff' },
@@ -25,7 +29,6 @@ const DEMO_WORKOUTS = [
   { id: 'd8',  person: 'demo-2', type: 'run',     date: daysAgo(4) },
   { id: 'd9',  person: 'demo-1', type: 'pilates', date: daysAgo(5) },
   { id: 'd10', person: 'demo-2', type: 'steps',   date: daysAgo(5), steps: 13400 },
-  // past weeks
   { id: 'd11', person: 'demo-1', type: 'gym',     date: daysAgo(8) },
   { id: 'd12', person: 'demo-1', type: 'run',     date: daysAgo(9) },
   { id: 'd13', person: 'demo-2', type: 'gym',     date: daysAgo(10) },
@@ -33,6 +36,63 @@ const DEMO_WORKOUTS = [
   { id: 'd15', person: 'demo-2', type: 'pilates', date: daysAgo(12) },
   { id: 'd16', person: 'demo-2', type: 'steps',   date: daysAgo(13), steps: 10800 },
 ];
+
+const DEMO_TABS = [
+  { id: 'home',    Icon: Home,      label: 'Home'    },
+  { id: 'log',     Icon: Plus,      label: 'Log'     },
+  { id: 'stats',   Icon: BarChart2, label: 'Stats'   },
+  { id: 'history', Icon: Trophy,    label: 'History' },
+];
+
+function DemoApp() {
+  const [tab, setTab] = useState('home');
+  const [logMode, setLogMode] = useState('workout');
+
+  return (
+    <>
+      <div className="phone-notch" />
+      <header className="app-header" onClick={() => setTab('home')} style={{ cursor: 'pointer' }}>
+        <h1 className="app-title">HEATED RIVALRY</h1>
+      </header>
+      <div className="phone-screen">
+        {tab === 'home' && (
+          <Scoreboard workouts={DEMO_WORKOUTS} persons={DEMO_PERSONS} onLog={() => {}} loading={false} userId="demo-1" />
+        )}
+        {tab === 'log' && (
+          <div className="log-screen">
+            <div className="log-mode-bar">
+              <button className={`log-mode-btn${logMode === 'workout' ? ' active' : ''}`} onClick={() => setLogMode('workout')}>
+                <Dumbbell size={14} strokeWidth={2} /> Workout
+              </button>
+              <button className={`log-mode-btn${logMode === 'steps' ? ' active' : ''}`} onClick={() => setLogMode('steps')}>
+                <Footprints size={14} strokeWidth={2} /> Steps
+              </button>
+            </div>
+            {logMode === 'workout' ? (
+              <LogWorkout personId="demo-1" onAdd={() => {}} onCancel={() => setTab('home')} />
+            ) : (
+              <Steps workouts={DEMO_WORKOUTS} persons={DEMO_PERSONS} onUpsertSteps={() => {}} userId="demo-1" />
+            )}
+          </div>
+        )}
+        {tab === 'stats' && (
+          <Charts workouts={DEMO_WORKOUTS} persons={DEMO_PERSONS} />
+        )}
+        {tab === 'history' && (
+          <WeeklyHistory workouts={DEMO_WORKOUTS} persons={DEMO_PERSONS} onDelete={() => {}} userId="demo-1" />
+        )}
+      </div>
+      <nav className="phone-nav">
+        {DEMO_TABS.map(({ id, Icon, label }) => (
+          <button key={id} className={`phone-nav-btn${tab === id ? ' phone-nav-btn--active' : ''}`} onClick={() => setTab(id)}>
+            <Icon size={20} strokeWidth={2} />
+            <span>{label}</span>
+          </button>
+        ))}
+      </nav>
+    </>
+  );
+}
 
 export default function LoginScreen() {
   const loginRef = useRef(null);
@@ -79,34 +139,7 @@ export default function LoginScreen() {
         </button>
         <div className="phone-frame-wrapper">
           <div className="phone-mockup">
-            <div className="phone-notch" />
-            <div className="phone-screen">
-              <Scoreboard
-                workouts={DEMO_WORKOUTS}
-                persons={DEMO_PERSONS}
-                onLog={() => {}}
-                loading={false}
-                userId="demo-1"
-              />
-            </div>
-            <nav className="phone-nav">
-              <div className="phone-nav-btn phone-nav-btn--active">
-                <Home size={20} strokeWidth={2} />
-                <span>Home</span>
-              </div>
-              <div className="phone-nav-btn">
-                <Plus size={20} strokeWidth={2} />
-                <span>Log</span>
-              </div>
-              <div className="phone-nav-btn">
-                <BarChart2 size={20} strokeWidth={2} />
-                <span>Stats</span>
-              </div>
-              <div className="phone-nav-btn">
-                <Trophy size={20} strokeWidth={2} />
-                <span>History</span>
-              </div>
-            </nav>
+            <DemoApp />
           </div>
         </div>
       </div>
