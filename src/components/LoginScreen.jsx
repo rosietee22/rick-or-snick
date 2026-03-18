@@ -78,7 +78,6 @@ export default function LoginScreen() {
           <ChevronUp size={16} strokeWidth={2.5} /> Back to sign in
         </button>
         <div className="phone-frame-wrapper">
-          <div className="preview-label">Example</div>
           <div className="phone-mockup">
             <div className="phone-notch" />
             <div className="phone-screen">
