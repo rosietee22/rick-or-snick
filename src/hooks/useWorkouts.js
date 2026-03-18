@@ -112,6 +112,10 @@ export function useWorkouts(competitionId) {
     };
     const { error: err } = await supabase.from('workouts').insert(entry);
     if (err) throw err;
+    setWorkouts((prev) => {
+      if (prev.some((w) => w.id === entry.id)) return prev;
+      return [entry, ...prev];
+    });
     return entry;
   };
 
