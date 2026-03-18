@@ -1,47 +1,92 @@
+import { useRef } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useLeaderboard } from '../hooks/useLeaderboard';
+import Scoreboard from './Scoreboard';
+
+const DEMO_PERSONS = [
+  { id: 'demo-1', name: 'Alex',   chartColor: '#0057ff' },
+  { id: 'demo-2', name: 'Jordan', chartColor: '#ff3b30' },
+];
+
+function daysAgo(n) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString();
+}
+
+const DEMO_WORKOUTS = [
+  { id: 'd1',  person: 'demo-1', type: 'gym',     date: daysAgo(0) },
+  { id: 'd2',  person: 'demo-1', type: 'run',     date: daysAgo(1) },
+  { id: 'd3',  person: 'demo-2', type: 'pilates', date: daysAgo(1) },
+  { id: 'd4',  person: 'demo-2', type: 'swim',    date: daysAgo(2) },
+  { id: 'd5',  person: 'demo-1', type: 'gym',     date: daysAgo(2) },
+  { id: 'd6',  person: 'demo-2', type: 'gym',     date: daysAgo(3) },
+  { id: 'd7',  person: 'demo-1', type: 'steps',   date: daysAgo(3), steps: 11200 },
+  { id: 'd8',  person: 'demo-2', type: 'run',     date: daysAgo(4) },
+  { id: 'd9',  person: 'demo-1', type: 'pilates', date: daysAgo(5) },
+  { id: 'd10', person: 'demo-2', type: 'steps',   date: daysAgo(5), steps: 13400 },
+  // past weeks
+  { id: 'd11', person: 'demo-1', type: 'gym',     date: daysAgo(8) },
+  { id: 'd12', person: 'demo-1', type: 'run',     date: daysAgo(9) },
+  { id: 'd13', person: 'demo-2', type: 'gym',     date: daysAgo(10) },
+  { id: 'd14', person: 'demo-1', type: 'swim',    date: daysAgo(11) },
+  { id: 'd15', person: 'demo-2', type: 'pilates', date: daysAgo(12) },
+  { id: 'd16', person: 'demo-2', type: 'steps',   date: daysAgo(13), steps: 10800 },
+];
 
 export default function LoginScreen() {
-  const { leaderboard, loading } = useLeaderboard();
+  const loginRef = useRef(null);
+  const previewRef = useRef(null);
+
   const handleSignIn = () => {
-    // Preserve any invite token in the URL so it survives the OAuth redirect
     const params = new URLSearchParams(window.location.search);
     const token = params.get('invite');
     if (token) {
       localStorage.setItem('pendingInviteToken', token);
     }
-
     supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: window.location.origin },
     });
   };
 
+  const scrollTo = (ref) => ref.current?.scrollIntoView({ behavior: 'smooth' });
+
   return (
-    <div className="login-screen">
-      <div className="login-inner">
-        <h1 className="app-title login-title">HEATED RIVALRY</h1>
-        <p className="login-sub">Track your fitness. Beat your rival.</p>
-
-        {!loading && leaderboard.length > 0 && (
-          <div className="login-leaderboard">
-            <p className="login-leaderboard-title">This week</p>
-            <ol className="login-leaderboard-list">
-              {leaderboard.map((row, i) => (
-                <li key={i} className="login-leaderboard-row">
-                  <span className="llb-rank">{i + 1}</span>
-                  <span className="llb-name">{row.first_name}</span>
-                  <span className="llb-pts">{row.points} pts</span>
-                </li>
-              ))}
-            </ol>
+    <div className="login-scroll-container">
+      {/* Panel 1 — login */}
+      <div className="login-panel" ref={loginRef}>
+        <div className="login-screen">
+          <div className="login-inner">
+            <h1 className="app-title login-title">HEATED RIVALRY</h1>
+            <p className="login-sub">Track your fitness. Beat your rival.</p>
+            <button className="google-btn" onClick={handleSignIn}>
+              <GoogleIcon />
+              Sign in with Google
+            </button>
           </div>
-        )}
-
-        <button className="google-btn" onClick={handleSignIn}>
-          <GoogleIcon />
-          Sign in with Google
+        </div>
+        <button className="login-scroll-btn" onClick={() => scrollTo(previewRef)} aria-label="See preview">
+          <span className="login-scroll-label">See a preview</span>
+          <ChevronDown size={20} strokeWidth={2.5} />
         </button>
+      </div>
+
+      {/* Panel 2 — preview */}
+      <div className="login-panel" ref={previewRef}>
+        <button className="preview-back-btn" onClick={() => scrollTo(loginRef)}>
+          <ChevronUp size={16} strokeWidth={2.5} /> Back to sign in
+        </button>
+        <div className="preview-label">Example</div>
+        <div className="preview-scoreboard">
+          <Scoreboard
+            workouts={DEMO_WORKOUTS}
+            persons={DEMO_PERSONS}
+            onLog={() => {}}
+            loading={false}
+            userId="demo-1"
+          />
+        </div>
       </div>
     </div>
   );

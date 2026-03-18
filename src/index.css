@@ -858,6 +858,20 @@ body {
 }
 
 /* ── Login screen ─────────────────────────────────────────── */
+.login-scroll-container {
+  height: 100svh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.login-panel {
+  height: 100svh;
+  scroll-snap-align: start;
+  position: relative;
+  overflow-y: auto;
+}
+
 .login-screen {
   min-height: 100svh;
   display: flex;
@@ -865,6 +879,60 @@ body {
   justify-content: center;
   padding: 24px;
   background: var(--bg);
+}
+
+.login-scroll-btn {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.login-scroll-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.preview-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 20px 20px 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.preview-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-align: center;
+  margin: 8px 0 4px;
+}
+
+.preview-scoreboard {
+  padding: 0 20px 40px;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .login-inner {
