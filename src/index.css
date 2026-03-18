@@ -939,26 +939,27 @@ body {
 }
 
 .phone-mockup {
-  width: min(240px, 64vw);
-  aspect-ratio: 9 / 19.5;
-  border: 7px solid #1c1c1e;
-  border-radius: 38px;
+  width: min(88vw, 360px);
+  height: calc(100svh - 150px);
+  max-height: 610px;
+  border: 8px solid #1c1c1e;
+  border-radius: 44px;
   overflow: hidden;
   background: var(--bg);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
   position: relative;
   flex-shrink: 0;
 }
 
 .phone-notch {
   position: absolute;
-  top: 7px;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 52px;
-  height: 4px;
+  width: 60px;
+  height: 5px;
   background: #1c1c1e;
-  border-radius: 2px;
+  border-radius: 3px;
   z-index: 2;
 }
 
@@ -966,7 +967,7 @@ body {
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-top: 18px;
+  padding-top: 22px;
   scrollbar-width: none;
 }
 
