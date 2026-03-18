@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Home, Plus, BarChart2, Trophy } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import Scoreboard from './Scoreboard';
 
@@ -90,6 +90,24 @@ export default function LoginScreen() {
                 userId="demo-1"
               />
             </div>
+            <nav className="phone-nav">
+              <div className="phone-nav-btn phone-nav-btn--active">
+                <Home size={20} strokeWidth={2} />
+                <span>Home</span>
+              </div>
+              <div className="phone-nav-btn">
+                <Plus size={20} strokeWidth={2} />
+                <span>Log</span>
+              </div>
+              <div className="phone-nav-btn">
+                <BarChart2 size={20} strokeWidth={2} />
+                <span>Stats</span>
+              </div>
+              <div className="phone-nav-btn">
+                <Trophy size={20} strokeWidth={2} />
+                <span>History</span>
+              </div>
+            </nav>
           </div>
         </div>
       </div>
