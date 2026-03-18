@@ -927,19 +927,16 @@ body {
   padding: 24px;
 }
 
-.login-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .login-privacy-link {
+  position: absolute;
+  top: 16px;
+  right: 16px;
   font-size: 0.65rem;
   font-weight: 600;
   color: var(--muted);
   text-decoration: none;
   letter-spacing: 0.04em;
-  padding: 8px;
+  padding: 4px;
 }
 
 .login-scroll-btn {
@@ -985,7 +982,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 24px calc(24px + env(safe-area-inset-bottom, 0px));
+  padding: 0 28px calc(28px + env(safe-area-inset-bottom, 0px));
   gap: 10px;
 }
 
@@ -1033,6 +1030,7 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  padding: 8px 10px 0;
 }
 
 .phone-screen::-webkit-scrollbar { display: none; }
@@ -1070,9 +1068,9 @@ body {
 
 .phone-nav-btn--active { color: var(--accent); }
 
-.phone-mockup .app-header { padding: 12px 16px 10px; flex-shrink: 0; position: static; zoom: 0.72; }
+.phone-mockup .app-header { padding: 16px 16px 14px; flex-shrink: 0; position: static; zoom: 0.72; }
 .phone-mockup .app-title  { font-size: 2.2rem; }
-.phone-mockup .phone-screen > * { zoom: 0.72; padding-left: 4px; padding-right: 4px; }
+.phone-mockup .phone-screen > * { zoom: 0.72; }
 
 .login-inner {
   display: flex;

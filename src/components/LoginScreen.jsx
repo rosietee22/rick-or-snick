@@ -116,6 +116,7 @@ export default function LoginScreen() {
     <div className="login-scroll-container">
       {/* Panel 1 — login */}
       <div className="login-panel login-panel--main" ref={loginRef}>
+        <a href="/privacy" className="login-privacy-link">Privacy &amp; Terms</a>
         <div className="login-screen">
           <div className="login-inner">
             <h1 className="app-title login-title">HEATED RIVALRY</h1>
@@ -126,13 +127,10 @@ export default function LoginScreen() {
             </button>
           </div>
         </div>
-        <div className="login-bottom">
-          <a href="/privacy" className="login-privacy-link">Privacy &amp; Terms</a>
-          <button className="login-scroll-btn" onClick={() => scrollTo(previewRef)} aria-label="See preview">
-            <span className="login-scroll-label">See a preview</span>
-            <ChevronDown size={20} strokeWidth={2.5} />
-          </button>
-        </div>
+        <button className="login-scroll-btn" onClick={() => scrollTo(previewRef)} aria-label="See preview">
+          <span className="login-scroll-label">See a preview</span>
+          <ChevronDown size={20} strokeWidth={2.5} />
+        </button>
       </div>
 
       {/* Panel 2 — preview */}
