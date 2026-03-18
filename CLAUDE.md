@@ -3,7 +3,7 @@
 ## Project Overview
 Fitness competition app where two people track workouts and steps to compete weekly. Live at heatedrivalry.app.
 
-**v2 goal:** Any two people can compete (not hardcoded Phoebe & Rosie). Adding Google Auth, competitions table, and invite links.
+**v2 status:** Complete. Any two people can compete via Google Auth, competitions table, and invite links.
 
 ---
 
@@ -36,7 +36,7 @@ npm run preview  # Preview build locally
 ## Directory Structure
 ```
 src/
-  components/   # Login, Onboarding, Scoreboard, LogWorkout, Steps, Charts, WeeklyHistory
+  components/   # Login (+ scrollable demo preview), Onboarding, Scoreboard, LogWorkout (date picker), Steps, Charts, WeeklyHistory (activity log + person filter)
   hooks/        # useAuth, useCompetition, useWorkouts, useLeaderboard
   lib/          # Supabase client
   utils/        # Scoring logic
@@ -49,7 +49,7 @@ scripts/
 ---
 
 ## Architecture
-- **No React Router** — tab-based navigation (`home | log | steps | stats | history`)
+- **No React Router** — tab-based navigation (`home | log | stats | history`)
 - **No global state** — React hooks only (no Redux/Zustand)
 - **Realtime** — Supabase subscriptions keep data synced live
 - **Mobile-first** — 480px max-width, PWA manifest
@@ -57,18 +57,12 @@ scripts/
 
 ---
 
-## v2 Phase Plan (follow in order)
-1. Auth (login screen + Google OAuth via `@supabase/auth-ui-react`)
-2. DB schema SQL (competitions, invites, steps tables + alter workouts)
-3. Onboarding + invite flow
-4. Scope all queries to competition
-5. Migration script (SQL, run in Supabase SQL editor)
-6. README update
-
-**Key decisions:**
+## Key Decisions
 - One competition per account (no leaving/rejoining)
 - Steps are in a separate `steps` table
-- person1 / person2 roles within a competition
+- Workouts update local state immediately after insert (no waiting for realtime)
+- LogWorkout logs for the current user only — date picker defaults to today, backdating supported
+- History tab shows workouts + 10k+ step days together as an activity log
 
 ---
 

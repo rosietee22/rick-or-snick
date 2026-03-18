@@ -8,13 +8,13 @@ Live at: [heatedrivalry.app](https://heatedrivalry.app)
 
 ## How it works
 
-- Sign in with Google — no passwords
+- Sign in with Google — no passwords (preview of the app available on the login screen before signing up)
 - One person creates a competition and shares an invite link
 - The other person opens the link, signs in, and joins instantly
-- Log workouts (Gym, Swim, Run, Pilates, Other) — each counts as 1 point
+- Log workouts (Gym, Swim, Run, Pilates, Other) — each counts as 1 point, with optional backdating
 - Track daily steps with a weekly calendar grid
 - See who's winning this week and all-time
-- History shows recent workouts with colour-coded cards per person
+- Activity Log in History shows workouts and 10k+ step days, filterable by person
 - Stats page shows weekly bar chart and totals
 
 ---
@@ -109,13 +109,13 @@ src/
 ├── App.jsx                  # Root — auth + competition context
 ├── index.css                # All styles
 ├── components/
-│   ├── LoginScreen.jsx      # Google sign-in screen
+│   ├── LoginScreen.jsx      # Google sign-in + scrollable demo preview
 │   ├── OnboardingScreen.jsx # Create/join competition flow
 │   ├── Scoreboard.jsx       # Weekly + all-time scores
-│   ├── LogWorkout.jsx       # Workout logging form
+│   ├── LogWorkout.jsx       # Workout logging form (date picker for backdating)
 │   ├── Steps.jsx            # Weekly steps calendar
 │   ├── Charts.jsx           # Bar chart + stats
-│   └── WeeklyHistory.jsx    # Recent workouts + weekly winners
+│   └── WeeklyHistory.jsx    # Activity log (workouts + steps) + weekly winners
 ├── hooks/
 │   ├── useAuth.js           # Supabase auth session
 │   ├── useCompetition.js    # Competition + player profiles
