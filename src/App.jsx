@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Home, Plus, BarChart2, Trophy, Footprints } from 'lucide-react';
+import { Home, Plus, BarChart2, Trophy, Footprints, Dumbbell } from 'lucide-react';
 import { useAuth } from './hooks/useAuth';
 import { useCompetition } from './hooks/useCompetition';
 import { useWorkouts } from './hooks/useWorkouts';
@@ -86,6 +86,7 @@ export default function App() {
                 className={`log-mode-btn${logMode === 'workout' ? ' active' : ''}`}
                 onClick={() => setLogMode('workout')}
               >
+                <Dumbbell size={14} strokeWidth={2} />
                 Workout
               </button>
               <button
@@ -98,8 +99,7 @@ export default function App() {
             </div>
             {logMode === 'workout' ? (
               <LogWorkout
-                persons={persons}
-                initialPerson={logPerson}
+                personId={user.id}
                 onAdd={handleLogged}
                 onCancel={() => { setTab('home'); setLogPerson(null); }}
               />
@@ -118,7 +118,7 @@ export default function App() {
           return (
             <button
               key={id}
-              className={`nav-btn${tab === id ? ' active' : ''}`}
+              className={`nav-btn${tab === id ? ' active' : ''}${id === 'log' && tab === 'home' ? ' nav-btn--cta' : ''}`}
               onClick={() => {
                 if (id !== 'log') setLogPerson(null);
                 setTab(id);

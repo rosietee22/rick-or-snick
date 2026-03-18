@@ -118,6 +118,13 @@ body {
 
 .nav-btn.active { color: var(--accent); }
 
+.nav-btn--cta .nav-icon-wrap {
+  background: #eef3ff;
+  border-radius: 10px;
+  padding: 4px 10px;
+  color: var(--accent);
+}
+
 .nav-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
 
 /* ── Shared ───────────────────────────────────────────────── */
@@ -358,6 +365,10 @@ body {
   color: var(--muted);
   transition: border-color 0.15s, color 0.15s;
   -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font-family: inherit;
 }
 
@@ -624,6 +635,38 @@ body {
 }
 
 .empty-state p { font-size: 0.88rem; line-height: 1.6; font-weight: 500; }
+
+.history-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.history-filter {
+  display: flex;
+  gap: 6px;
+}
+
+.history-filter-btn {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.history-filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #eef3ff;
+}
 
 .history-list { display: flex; flex-direction: column; gap: 10px; }
 

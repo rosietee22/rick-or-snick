@@ -108,7 +108,7 @@ export function useWorkouts(competitionId) {
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       ...workout,
       competition_id: competitionId,
-      date: new Date().toISOString(),
+      date: workout.date || new Date().toISOString(),
     };
     const { error: err } = await supabase.from('workouts').insert(entry);
     if (err) throw err;

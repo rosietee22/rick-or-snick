@@ -77,19 +77,6 @@ export default function Scoreboard({ workouts, persons, onLog, loading }) {
         )}
       </section>
 
-      {/* Log buttons */}
-      <section>
-        <h2 className="section-title">Log a Workout</h2>
-        <div className="log-grid">
-          {persons.map((p) => (
-            <button key={p.id} className="log-btn" onClick={() => onLog(p.id)}>
-              <span className="log-name">{p.name}</span>
-              <span className="log-sub">Tap to log</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
       {/* All-time */}
       <section>
         <h2 className="section-title">All Time</h2>

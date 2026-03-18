@@ -1,14 +1,18 @@
-import { Trophy, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Trophy, Trash2, Footprints } from 'lucide-react';
 import { getPastWeekWinners } from '../utils/scoring';
 
 export default function WeeklyHistory({ workouts, persons, onDelete, userId }) {
+  const [personFilter, setPersonFilter] = useState(null);
+
   const history = getPastWeekWinners(workouts, persons);
   const lastWeek = history[0] ?? null;
   const iWonLastWeek = lastWeek && !lastWeek.tied && lastWeek.winner?.id === userId;
 
-  const recentWorkouts = workouts
-    .filter((w) => w.type !== 'steps')
-    .slice(0, 20);
+  const activityItems = workouts
+    .filter((w) => w.type !== 'steps' || (w.steps ?? 0) >= 10000)
+    .filter((w) => !personFilter || w.person === personFilter)
+    .slice(0, 30);
 
   const getPerson = (personId) => persons.find((p) => p.id === personId);
 
@@ -26,15 +30,36 @@ export default function WeeklyHistory({ workouts, persons, onDelete, userId }) {
 
   return (
     <div className="history">
-      {/* Recent workouts */}
+      {/* Activity log */}
       <section>
-        <h2 className="section-title">Recent Workouts</h2>
-        {recentWorkouts.length === 0 ? (
-          <p className="empty-hint">No workouts logged yet.</p>
+        <div className="history-section-header">
+          <h2 className="section-title" style={{ marginBottom: 0 }}>Activity Log</h2>
+          <div className="history-filter">
+            <button
+              className={`history-filter-btn${!personFilter ? ' active' : ''}`}
+              onClick={() => setPersonFilter(null)}
+            >
+              All
+            </button>
+            {persons.map((p) => (
+              <button
+                key={p.id}
+                className={`history-filter-btn${personFilter === p.id ? ' active' : ''}`}
+                onClick={() => setPersonFilter(p.id)}
+              >
+                {firstName(p.name)}
+              </button>
+            ))}
+          </div>
+        </div>
+        {activityItems.length === 0 ? (
+          <p className="empty-hint">No activity logged yet.</p>
         ) : (
           <div className="recent-list">
-            {recentWorkouts.map((w) => {
+            {activityItems.map((w) => {
               const person = getPerson(w.person);
+              const isSteps = w.type === 'steps';
+              const stepPts = isSteps ? Math.floor((w.steps ?? 0) / 10000) : null;
               return (
                 <div key={w.id} className="recent-row" style={{ backgroundColor: tint(person?.chartColor ?? '#111111') }}>
                   <div className="recent-date">
@@ -42,11 +67,23 @@ export default function WeeklyHistory({ workouts, persons, onDelete, userId }) {
                     <span className="recent-month">{formatMonthYear(w.date)}</span>
                   </div>
                   <div className="recent-info">
-                    <span className="recent-activity">{w.activity ?? w.type}</span>
-                    {w.note && <span className="recent-notes">{w.note}</span>}
+                    {isSteps ? (
+                      <>
+                        <span className="recent-activity" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Footprints size={13} strokeWidth={2} />
+                          {w.steps?.toLocaleString()} steps
+                        </span>
+                        <span className="recent-notes">+{stepPts} {stepPts === 1 ? 'pt' : 'pts'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="recent-activity">{w.activity ?? w.type}</span>
+                        {w.note && <span className="recent-notes">{w.note}</span>}
+                      </>
+                    )}
                     <span className="recent-name">{person?.name}</span>
                   </div>
-                  {isOwn(w.person) && (
+                  {isOwn(w.person) && !isSteps && (
                     <button className="delete-btn" onClick={() => handleDelete(w.id)} aria-label="Delete">
                       <Trash2 size={15} strokeWidth={2} />
                     </button>

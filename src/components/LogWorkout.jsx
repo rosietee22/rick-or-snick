@@ -9,21 +9,24 @@ const ACTIVITY_TYPES = [
   { id: 'other',   Icon: Zap,      label: 'Other'   },
 ];
 
-export default function LogWorkout({ persons, initialPerson, onAdd, onCancel }) {
-  const [personId, setPersonId] = useState(initialPerson || persons[0].id);
+export default function LogWorkout({ personId, onAdd, onCancel }) {
   const [type, setType] = useState('gym');
   const [otherLabel, setOtherLabel] = useState('');
   const [note, setNote] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const dateISO = date ? `${date}T12:00:00.000Z` : new Date().toISOString();
 
     onAdd({
       person: personId,
       type,
       label: type === 'other' ? otherLabel.trim() || undefined : undefined,
       note: note.trim() || undefined,
+      date: dateISO,
     });
 
     setSubmitted(true);
@@ -50,19 +53,14 @@ export default function LogWorkout({ persons, initialPerson, onAdd, onCancel }) 
         Log a Workout
       </h2>
 
-      {/* Person picker */}
-      <div className="person-picker">
-        {persons.map((p) => (
-          <button
-            key={p.id}
-            type="button"
-            className={`person-pick-btn${personId === p.id ? ' active' : ''}`}
-            onClick={() => setPersonId(p.id)}
-          >
-            {p.name}
-          </button>
-        ))}
-      </div>
+      {/* Date picker */}
+      <input
+        type="date"
+        className="text-input"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        max={new Date().toISOString().slice(0, 10)}
+      />
 
       <form onSubmit={handleSubmit} className="log-form">
         {/* Activity type */}
