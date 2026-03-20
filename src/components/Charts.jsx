@@ -9,8 +9,10 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { getWeekKey, formatWeekLabel, getPoints } from '../utils/scoring';
+import { useLeaderboard } from '../hooks/useLeaderboard';
 
 export default function Charts({ workouts, persons }) {
+  const { leaderboard } = useLeaderboard();
   // Build data for the last 8 weeks (including current)
   const buildWeekData = () => {
     const weeks = {};
@@ -104,6 +106,23 @@ export default function Charts({ workouts, persons }) {
           ))}
         </div>
       </section>
+
+      {leaderboard.length > 0 && (
+        <section>
+          <h2 className="section-title">This Week's Leaderboard</h2>
+          <div className="global-leaderboard">
+            <ol className="login-leaderboard-list">
+              {leaderboard.map((row, i) => (
+                <li key={i} className="login-leaderboard-row">
+                  <span className="llb-rank">{i + 1}</span>
+                  <span className="llb-name">{row.first_name}</span>
+                  <span className="llb-pts">{row.points} pts</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
