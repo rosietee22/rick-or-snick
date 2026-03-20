@@ -40,10 +40,10 @@ export function useCompetition(userId) {
     // Build the persons array (same shape as the old PERSONS constant)
     const ps = [];
     if (data.player1) {
-      ps.push({ id: data.player1_id, name: data.player1.display_name, chartColor: CHART_COLORS[0] });
+      ps.push({ id: data.player1_id, name: data.player1.display_name?.split(' ')[0] ?? data.player1.display_name, chartColor: CHART_COLORS[0] });
     }
     if (data.player2) {
-      ps.push({ id: data.player2_id, name: data.player2.display_name, chartColor: CHART_COLORS[1] });
+      ps.push({ id: data.player2_id, name: data.player2.display_name?.split(' ')[0] ?? data.player2.display_name, chartColor: CHART_COLORS[1] });
     }
     setPersons(ps);
 
