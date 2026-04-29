@@ -859,12 +859,24 @@ body {
 
 /* ── Privacy policy ───────────────────────────────────────── */
 .policy-page {
+  position: relative;
   max-width: 600px;
   margin: 0 auto;
   padding: 40px 24px 80px;
   font-family: inherit;
   color: var(--text);
   line-height: 1.7;
+}
+
+.policy-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 1.1rem;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px;
+  line-height: 1;
 }
 
 .policy-title { margin-bottom: 8px; }
@@ -913,9 +925,11 @@ body {
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .login-panel--main {
+  position: relative;
   background: var(--bg);
 }
 
@@ -948,7 +962,7 @@ body {
   border: none;
   color: var(--muted);
   cursor: pointer;
-  padding: 20px 8px calc(20px + env(safe-area-inset-bottom, 0px));
+  padding: 20px 8px calc(32px + env(safe-area-inset-bottom, 0px));
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -972,7 +986,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   cursor: pointer;
-  padding: 20px 20px 12px;
+  padding: 32px 20px 12px;
   -webkit-tap-highlight-color: transparent;
 }
 

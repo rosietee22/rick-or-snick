@@ -1,6 +1,7 @@
 export default function PrivacyPolicy() {
   return (
     <div className="policy-page">
+      <a href="/" className="policy-close" aria-label="Close">✕</a>
       <h1 className="app-title policy-title">HEATED RIVALRY</h1>
       <h2>Privacy Policy</h2>
       <p>Last updated: March 2026</p>
