@@ -3,6 +3,7 @@ import { Home, Plus, BarChart2, Trophy, Footprints, Dumbbell } from 'lucide-reac
 import { useAuth } from './hooks/useAuth';
 import { useCompetition } from './hooks/useCompetition';
 import { useWorkouts } from './hooks/useWorkouts';
+import { localDateKey } from './utils/scoring';
 import LoginScreen from './components/LoginScreen';
 import OnboardingScreen from './components/OnboardingScreen';
 import Scoreboard from './components/Scoreboard';
@@ -48,7 +49,7 @@ export default function App() {
   // (steps should be logged at end of day, not during)
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayKey = yesterday.toISOString().slice(0, 10);
+  const yesterdayKey = localDateKey(yesterday);
   const stepsMissingToday = !!(user && persons.length > 0 &&
     !workouts.some(w => w.person === user.id && w.type === 'steps' && w.date.slice(0, 10) === yesterdayKey));
 

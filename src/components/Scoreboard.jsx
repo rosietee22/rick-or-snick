@@ -1,8 +1,8 @@
 import { Crown, Dumbbell, Footprints, Trophy } from 'lucide-react';
-import { getPointBreakdown, getWeekKey, getPastWeekWinners } from '../utils/scoring';
+import { getPointBreakdown, getWeekKey, getPastWeekWinners, localDateKey } from '../utils/scoring';
 
 export default function Scoreboard({ workouts, persons, onLog, loading }) {
-  const currentWeek = getWeekKey(new Date().toISOString());
+  const currentWeek = getWeekKey(localDateKey(new Date()));
   const firstName = (name) => name?.split(' ')[0] ?? name;
 
   const weekWorkouts = workouts.filter((w) => getWeekKey(w.date) === currentWeek);

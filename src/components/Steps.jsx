@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { localDateKey } from '../utils/scoring';
 
 const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
@@ -37,7 +38,7 @@ export default function Steps({ workouts, persons, onUpsertSteps, userId }) {
   const [rivalError, setRivalError] = useState(false);
 
   const weekDates = getWeekDates(weekOffset);
-  const todayKey = new Date().toISOString().slice(0, 10);
+  const todayKey = localDateKey(new Date());
 
   const getStepsForDay = (personId, dateKey) => {
     const entry = workouts.find(
@@ -97,7 +98,7 @@ export default function Steps({ workouts, persons, onUpsertSteps, userId }) {
       {persons.map((p) => {
         const isEditingThisPerson = editing?.personId === p.id;
         const editingDate = isEditingThisPerson
-          ? weekDates.find((d) => d.toISOString().slice(0, 10) === editing.dateKey)
+          ? weekDates.find((d) => localDateKey(d) === editing.dateKey)
           : null;
         const pts = isEditingThisPerson ? Math.floor((parseInt(inputValue) || 0) / 10000) : 0;
 
@@ -106,7 +107,7 @@ export default function Steps({ workouts, persons, onUpsertSteps, userId }) {
             <h2 className="section-title">{p.name}</h2>
             <div className="steps-grid">
               {weekDates.map((date, i) => {
-                const dateKey = date.toISOString().slice(0, 10);
+                const dateKey = localDateKey(date);
                 const steps = getStepsForDay(p.id, dateKey);
                 const isToday = dateKey === todayKey;
                 const isActive = editing?.personId === p.id && editing?.dateKey === dateKey;
@@ -136,7 +137,7 @@ export default function Steps({ workouts, persons, onUpsertSteps, userId }) {
                 </div>
                 <div className="steps-editor-row">
                   <input
-                    type="number"
+                    type="text"
                     className="text-input"
                     placeholder="e.g. 12500"
                     value={inputValue}

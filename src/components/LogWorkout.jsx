@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronLeft, Dumbbell, Waves, Wind, Flower2, Zap, Check } from 'lucide-react';
+import { localDateKey } from '../utils/scoring';
 
 const ACTIVITY_TYPES = [
   { id: 'gym',     Icon: Dumbbell, label: 'Gym'     },
@@ -14,7 +15,7 @@ export default function LogWorkout({ personId, onAdd, onCancel }) {
   const [otherLabel, setOtherLabel] = useState('');
   const [note, setNote] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(localDateKey(new Date()));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -59,7 +60,7 @@ export default function LogWorkout({ personId, onAdd, onCancel }) {
         className="text-input"
         value={date}
         onChange={(e) => setDate(e.target.value)}
-        max={new Date().toISOString().slice(0, 10)}
+        max={localDateKey(new Date())}
       />
 
       <form onSubmit={handleSubmit} className="log-form">

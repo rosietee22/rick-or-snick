@@ -1,3 +1,10 @@
+export const localDateKey = (d) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
 export const getPoints = (workout) => {
   if (workout.type === 'steps') {
     return Math.floor((workout.steps || 0) / 10000);
@@ -30,7 +37,7 @@ export const getWeekStart = (dateStr) => {
 
 // Returns "YYYY-MM-DD" for the Monday of the week
 export const getWeekKey = (dateStr) => {
-  return getWeekStart(dateStr).toISOString().split('T')[0];
+  return localDateKey(getWeekStart(dateStr));
 };
 
 // Returns "Mar 3" style label from a week key
@@ -62,7 +69,7 @@ export const getWeeklyStats = (workouts, persons) => {
 
 // Returns an array of past week results (excludes current week), newest first
 export const getPastWeekWinners = (workouts, persons) => {
-  const currentWeek = getWeekKey(new Date().toISOString());
+  const currentWeek = getWeekKey(localDateKey(new Date()));
   const weeks = getWeeklyStats(workouts, persons);
 
   return Object.entries(weeks)

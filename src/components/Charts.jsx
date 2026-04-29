@@ -8,7 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { getWeekKey, formatWeekLabel, getPoints } from '../utils/scoring';
+import { getWeekKey, formatWeekLabel, getPoints, localDateKey } from '../utils/scoring';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 
 export default function Charts({ workouts, persons }) {
@@ -19,7 +19,7 @@ export default function Charts({ workouts, persons }) {
     for (let i = 7; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i * 7);
-      const key = getWeekKey(d.toISOString());
+      const key = getWeekKey(localDateKey(d));
       if (!weeks[key]) {
         weeks[key] = { week: formatWeekLabel(key), _key: key };
         persons.forEach((p) => { weeks[key][p.id] = 0; });
