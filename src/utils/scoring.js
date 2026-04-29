@@ -26,7 +26,7 @@ export const getPointBreakdown = (workouts, personId) => {
 
 // Returns the Monday of the week for a given date string
 export const getWeekStart = (dateStr) => {
-  const d = new Date(dateStr);
+  const d = new Date(dateStr.length === 10 ? dateStr + 'T12:00:00' : dateStr);
   const day = d.getDay(); // 0=Sun, 1=Mon...
   const diff = day === 0 ? -6 : 1 - day;
   const monday = new Date(d);
